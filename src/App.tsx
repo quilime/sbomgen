@@ -7,16 +7,21 @@ import { useRef, useState, useEffect } from "react";
 export default () => {
 
     const [dockerImage, setDockerImage] = useState();
-    const [response, setResponse] = useState();
 
     const fetchSBOM = async (e:any) => {
         const genButton = e.target;
         genButton.disabled = true;
         genButton.innerHTML = "Processing...";
 
-        const f = await fetch(import.meta.env.VITE_SERVER_URL as RequestInfo);
+        const f = await fetch(import.meta.env.VITE_SERVER_URL as RequestInfo, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                dockerImage : dockerImage
+            })
+        });
         const res = await f.json();
-        setResponse(res);
+        console.log(res);
 
         genButton.disabled = false;
         genButton.innerHTML = "Generate";
@@ -36,13 +41,6 @@ export default () => {
             />
         </div>
         <button className="btn btn-primary" onClick={fetchSBOM}>Generate</button>
-
-        {response && (
-        <div id="response">
-            {JSON.stringify(response)}
-        </div>
-        )}
-
     </>
     );
 }

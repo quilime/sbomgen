@@ -1,5 +1,7 @@
 import express, { Request, Response, Application }  from 'express';
 import cors from 'cors';
+import exec from 'child_process';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,9 +19,11 @@ app.get("/", (req:Request, res:Response) => {
 });
 
 app.post('/', (req:Request, res:Response) => {
-    console.log(req.body.dockerImage);
-    // console.log('Got body:', req.body);
-
+    if (!req.body.dockerImage) {
+        res.json({status: "no image"});
+    }
+    const img = req.body.dockerImage;
+    res.json({status: "processing image"});
 });
 
 app.listen(PORT, () => {
