@@ -6,7 +6,8 @@
     "start": "vite",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "typewatch": "tsc --noEmit --watch"
+    "typewatch": "tsc --noEmit --watch",
+    "deploy": "./scripts/deploy.sh"
   },
   "proxy": "http://localhost:8888",
   "license": "MIT",

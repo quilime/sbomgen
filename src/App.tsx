@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from "react";
 export default () => {
 
     const [dockerImage, setDockerImage] = useState("");
+    const [dockerTag, setDockerTag] = useState("latest");
     const [error, setError] = useState("");
 
     const fetchSBOM = async (e:any) => {
@@ -22,7 +23,7 @@ export default () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                dockerImage : dockerImage
+                dockerImage : dockerImage + ":" + dockerTag
             })
         });
         const res = await f.json();
@@ -35,7 +36,7 @@ export default () => {
             const link = document.createElement('a');
             const dockerImageClean = dockerImage.replace('/', '-');
             link.href = url;
-            link.setAttribute('download', `${dockerImageClean}.cyclonedx`);
+            link.setAttribute('download', `${dockerImageClean}-${dockerTag}.cyclonedx`);
             document.body.appendChild(link);
             link.click();
 
@@ -58,17 +59,38 @@ export default () => {
     <>
         <h1 className="display-5">CycloneDX SBOM Generator</h1>
         <div className="form-group">
+
+            <br />
+
             <label>Docker Image</label>
+            <br />
             <input
+                style={{ width: "100%" }}
                 type="text"
-                id="dockerImageInput"
-                name="dockerImage"
-                placeholder="example: linuxserver/sickbeard"
+                placeholder="example: ubuntu, or amazon/aws-node-termination-handler"
                 onChange={(e:any) => setDockerImage(e.target.value)}
             />
+            <br />
+            <br />
+
+            <label>Tag</label>
+            <br />
+            <input
+                type="text"
+                placeholder="latest"
+                value={dockerTag}
+                onChange={(e:any) => setDockerTag(e.target.value)}
+            />
+
+            <br />
+            <br />
+
+            <button disabled={dockerImage ? false : true } className="btn btn-primary" onClick={fetchSBOM}>Generate</button>
         </div>
 
-        <button disabled={dockerImage ? false : true } className="btn btn-primary" onClick={fetchSBOM}>Generate</button>
+
+
+
 
         {error && (<>
             <br />

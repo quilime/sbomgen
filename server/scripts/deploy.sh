@@ -1,3 +1,3 @@
 #!/bin/sh
-npm run compile
+npm run build
 rsync -var dist/index.js package.json syftrunner@sbomgen.com:server/
