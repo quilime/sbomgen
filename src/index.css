@@ -1,0 +1,10 @@
+#root {
+    max-width:600px;
+    margin: 2em;
+}
+input[type="text"] {
+    width:100%;
+}
+#response {
+    margin-top:2em;
+}
